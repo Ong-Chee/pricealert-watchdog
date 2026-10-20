@@ -24,4 +24,5 @@ jobs:
           STALE_MIN: ${{ vars.STALE_MIN }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_IDS: ${{ secrets.CHAT_IDS }}
+          TG_API: ${{ vars.TG_API }}   # 비워 두면 텔레그램. 시험할 때만 다른 주소로 바꿈
         run: bash check.sh
