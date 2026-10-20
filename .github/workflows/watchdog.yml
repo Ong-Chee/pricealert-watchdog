@@ -1,0 +1,27 @@
+name: watchdog
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub 사정으로 몇 분씩 늦어질 수 있음
+  workflow_dispatch:
+
+permissions:
+  contents: write           # state/alerted 기록용
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: 서버 신호 확인
+        env:
+          HEARTBEAT: ${{ vars.HEARTBEAT }}
+          STALE_MIN: ${{ vars.STALE_MIN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_IDS: ${{ secrets.CHAT_IDS }}
+        run: bash check.sh
